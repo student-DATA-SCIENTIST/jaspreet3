@@ -1,0 +1,36 @@
+name: 🚀 Build and Test Super Workflow (Issue Triggered)
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  build-test:
+    name: 🛠️ Build and 🧪 Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔽 Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: 🛠️ Set Up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 📦 Install Dependencies
+      run: npm ci
+
+    - name: 🧪 Run Tests
+      run: npm run test
+
+    - name: 🏗️ Build Project
+      run: npm run build
+
+    - name: 🎉 Success Message
+      if: success()
+      run: echo "✅ Great job! Build and tests passed successfully!"
+
+    - name: ❌ Failure Notice
+      if: failure()
+      run: echo "🚨 Oops! Something went wrong. Please check the logs."
